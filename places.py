@@ -157,7 +157,13 @@ def place_details(place_id: str) -> dict:
     reviews = []
     for r in p.get("reviews", [])[:5]:
         txt = (r.get("text") or {}).get("text") or (r.get("originalText") or {}).get("text", "")
-        reviews.append({"rating": r.get("rating"), "text": txt})
+        reviews.append(
+            {
+                "rating": r.get("rating"),
+                "text": txt,
+                "when": r.get("relativePublishTimeDescription"),  # e.g. "4 months ago"
+            }
+        )
     return {
         "id": p.get("id"),
         "name": (p.get("displayName") or {}).get("text", ""),

@@ -111,7 +111,7 @@ def _slim(p: dict) -> dict:
         "summary": p.get("summary"),
         "website": p.get("website"),
         "reviews": [
-            {"stars": r.get("rating"), "text": r.get("text")}
+            {"stars": r.get("rating"), "when": r.get("when"), "text": r.get("text")}
             for r in p.get("reviews", [])
             if r.get("text")
         ][:5],
