@@ -52,10 +52,10 @@ How to judge (small-town aware):
 Return ONLY valid JSON, no prose, in exactly this shape:
 {
   "lodging": [
-    {"name": "...", "independent": true, "recommend": true, "synthesis": "<=2 honest lines incl. any negative"}
+    {"name": "...", "independent": true, "recommend": true, "synthesis": "<=2 honest lines"}
   ],
   "food": [
-    {"name": "...", "independent": true, "recommend": true, "synthesis": "<=2 honest lines incl. any negative"}
+    {"name": "...", "independent": true, "recommend": true, "synthesis": "<=2 honest lines"}
   ],
   "town_verdict": "PASS" | "FAIL",
   "reason": "one line: why the town passes or fails"
