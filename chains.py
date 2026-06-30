@@ -7,7 +7,6 @@ fuzzy backstop (difflib) to catch variants/misspellings of single-token brands.
 
 from __future__ import annotations
 
-import difflib
 import re
 
 # Lodging chains. Includes the sneaky parent-brand ones called out in the brief
@@ -64,34 +63,33 @@ ALL_CHAINS = LODGING_CHAINS + FOOD_CHAINS
 _PUNCT = re.compile(r"[^a-z0-9 ]+")
 
 
-def _normalize(name: str) -> str:
-    return _PUNCT.sub(" ", name.lower()).strip()
+def _normalize(text: str) -> str:
+    """Lowercase, punctuation -> spaces, collapse whitespace."""
+    return " ".join(_PUNCT.sub(" ", text.lower()).split())
 
 
-def is_chain(name: str, fuzzy_cutoff: float = 0.88) -> tuple[bool, str | None]:
+# Pre-normalize blocklist terms so matching is apples-to-apples with names
+# (e.g. "a&w" -> "a w", "chick-fil-a" -> "chick fil a"). Keep the original for
+# readable logging.
+_NORM_CHAINS = [(t, _normalize(t)) for t in ALL_CHAINS]
+_NORM_CHAINS = [(orig, norm) for orig, norm in _NORM_CHAINS if norm]
+
+
+def is_chain(name: str) -> tuple[bool, str | None]:
     """Return (is_chain, matched_term).
 
-    1) Substring match of any blocklist term in the normalized name.
-    2) Fuzzy backstop: compare each blocklist term against same-length windows
-       of the name to catch variants/typos (e.g. "Super-8" vs "Super Eight").
+    Word-boundary match: a blocklist term must begin at the start of a word in
+    the name, but may continue past it — so the stem "mcdonald" still catches
+    "mcdonalds" while "arby" no longer matches "darby". Fuzzy/variant matching
+    is deferred to Phase 2 (pg_trgm in Postgres).
     """
     norm = _normalize(name)
     if not norm:
         return False, None
-
-    for term in ALL_CHAINS:
-        if term in norm:
-            return True, term
-
-    # Fuzzy backstop on multi-word terms vs sliding windows of the name.
-    tokens = norm.split()
-    for term in ALL_CHAINS:
-        tlen = len(term.split())
-        for i in range(len(tokens) - tlen + 1):
-            window = " ".join(tokens[i : i + tlen])
-            if difflib.SequenceMatcher(None, term, window).ratio() >= fuzzy_cutoff:
-                return True, term
-
+    haystack = " " + norm  # leading space gives the first word a left boundary
+    for orig, term in _NORM_CHAINS:
+        if (" " + term) in haystack:
+            return True, orig
     return False, None
 
 
