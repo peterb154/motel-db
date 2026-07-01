@@ -43,3 +43,4 @@ rebuilt from a fresh template.
 `docker compose up -d --build`.
 
 <!-- deployed via GitHub push -> n8n -> /api/deploy (auto) -->
+<!-- auto-deploy test 2026-07-01T22:42:18Z -->
