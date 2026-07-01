@@ -41,3 +41,5 @@ rebuilt from a fresh template.
 `pct create` (Ubuntu 22.04, `nesting=1,keyctl=1`) → clone into `/opt/waypoint` →
 `bash bootstrap-lxc.sh` → apply the DNS gotcha above → `cp .env.example .env` and fill →
 `docker compose up -d --build`.
+
+<!-- deployed via GitHub push -> n8n -> /api/deploy (auto) -->
