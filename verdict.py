@@ -182,7 +182,9 @@ def _gather(lat, lon, included_types, top_n, excluded_types=None):
     return detailed, dropped
 
 
-def _judge(town: str, lodging: list[dict], food: list[dict], attractions: list[dict]) -> dict:
+def _judge(
+    town: str, lodging: list[dict], food: list[dict], attractions: list[dict], mode: str = "moto"
+) -> dict:
     payload = {
         "town": town,
         "lodging_candidates": [_slim(p) for p in lodging],
@@ -192,10 +194,21 @@ def _judge(town: str, lodging: list[dict], food: list[dict], attractions: list[d
             for a in attractions
         ],
     }
+    if mode == "couple":
+        mode_note = (
+            "\n\nTRIP MODE = couple/car: bed & breakfasts and guest houses ARE acceptable "
+            "lodging — do NOT apply the B&B cap; score a good B&B like any independent lodging "
+            "(character is often a plus)."
+        )
+    else:
+        mode_note = (
+            "\n\nTRIP MODE = moto/group: B&Bs and guest houses are excluded upstream (a group of "
+            "riders won't book one). If one still appears, treat it as unsuitable lodging."
+        )
     client = boto3.client("bedrock-runtime", region_name=os.environ.get("AWS_REGION", "us-east-1"))
     resp = client.converse(
         modelId=MODEL_ID,
-        system=[{"text": SYSTEM_PROMPT}],
+        system=[{"text": SYSTEM_PROMPT + mode_note}],
         messages=[{"role": "user", "content": [{"text": json.dumps(payload, indent=2)}]}],
         inferenceConfig={"maxTokens": 2000, "temperature": 0.2},
     )
@@ -240,17 +253,28 @@ def _slim(p: dict) -> dict:
 
 
 def main() -> int:
-    if len(sys.argv) < 2:
-        print('usage: python verdict.py "Town, ST"')
+    argv = sys.argv[1:]
+    flags = {a for a in argv if a.startswith("--")}
+    positional = [a for a in argv if not a.startswith("--")]
+    if not positional:
+        print('usage: python verdict.py "Town, ST" [--couple]')
         return 2
-    town = sys.argv[1]
+    town = positional[0]
+    mode = "couple" if ({"--couple", "--car"} & flags) else "moto"
 
     lat, lon, display = places.geocode(town)
-    print(f"\n=== {town} ===")
+    print(f"\n=== {town} ===   [mode: {mode}]")
     print(f"geocoded: {display}  ({lat:.4f}, {lon:.4f})\n")
 
+    lodging_types = list(places.LODGING_TYPES)
+    lodging_excl = list(places.LODGING_EXCLUDE_TYPES)
+    if mode == "moto":
+        # Drop B&B types from BOTH included and excluded-conflict: a type can't be
+        # in includedTypes and excludedTypes at once (400).
+        lodging_types = [t for t in lodging_types if t not in places.LODGING_BNB_TYPES]
+        lodging_excl += places.LODGING_BNB_TYPES
     lodging, lodging_chains = _gather(
-        lat, lon, places.LODGING_TYPES, TOP_N_LODGING, excluded_types=places.LODGING_EXCLUDE_TYPES
+        lat, lon, lodging_types, TOP_N_LODGING, excluded_types=lodging_excl
     )
     food, food_chains = _gather(lat, lon, places.FOOD_TYPES, TOP_N_FOOD)
     attractions = places.search_nearby(
@@ -267,7 +291,7 @@ def main() -> int:
         print("SCORE: 0/10  [filter-out] — no independent lodging or food found.\n")
         return 0
 
-    r = _judge(town, lodging, food, attractions)
+    r = _judge(town, lodging, food, attractions, mode)
     _print_score(r, lodging)
     return 0
 

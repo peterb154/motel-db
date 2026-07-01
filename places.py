@@ -37,6 +37,10 @@ FOOD_TYPES = ["restaurant", "diner", "cafe", "meal_takeaway", "bar_and_grill"]
 # classic hotel). Keeps hotels, motels, inns, B&Bs, cottages, guest houses.
 LODGING_EXCLUDE_TYPES = ["campground", "rv_park", "mobile_home_park"]
 
+# Intimate "guest in someone's home" lodging — excluded in the default moto/group
+# mode (8 riders won't book a B&B), allowed in couple/car mode.
+LODGING_BNB_TYPES = ["bed_and_breakfast", "guest_house", "private_guest_room"]
+
 # Cultural/historic/attraction types — context for the town-charm judgment. Count
 # alone doesn't separate charm (a workforce town can have one famous roadside
 # oddity); the judge weighs KIND (walkable historic downtown, arts scene) qualitatively.
