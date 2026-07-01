@@ -46,9 +46,12 @@ LODGING (4 pts), scored on the best SUITABLE independent lodging:
 - independence_character (0-2): 2 = clearly independent motel/hotel/inn, character evident in
   reviews (named owner, specific decor, personality-driven praise); 1 = independent but generic
   execution, OR soft-brand-affiliated (Ascend, Tapestry, Tribute Portfolio, Curio, Autograph,
-  Unbound); 0 = a real chain. B&B RULE: if the best option is a bed_and_breakfast / guest_house
-  / private room / single cabin, CAP this at 0.75 and say so — a rider wouldn't normally book
-  one, and a town whose only good lodging is a B&B cannot be route-worthy on lodging.
+  Unbound); 0 = a real chain. B&B RULE — SELECTION FIRST: pick the best SUITABLE option (motel
+  / hotel / lodge / inn) as the town's representative EVEN IF a bed_and_breakfast / guest_house
+  / private room / single cabin is higher-rated — the rider books the motel, not the B&B (note
+  the B&B as an alternative if you like). Only when the town has NO suitable motel/hotel/inn
+  worth a look do you fall back to a B&B, and then CAP this at 0.75 and say so — a B&B-only town
+  cannot be route-worthy on lodging.
 - price_tier (0-1): 1 = no price-apologetics; 0.5 = mixed; 0 = price-as-apology dominant
   ("decent for the money", "you can pay more for better", "budget option but").
 - review_quality (0-1): 1 = specific, sensory, repeat-visit, complaints (if any) specific and
