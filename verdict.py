@@ -148,6 +148,9 @@ SHARPENING:
   workforce towns (charm 0-1) even with one famous attraction.
 
 == OUTPUT (JSON only, no prose) ==
+Every dimension needs a `notes` entry: a specific one-line WHY for that score, citing
+the concrete signal (a named place, a review detail, the town's economy, the best dinner
+spot's rating) — not a restatement of the rubric. This is the explanation the user reads.
 {
   "best_lodging": {"name": "...", "soft_brand": false, "synthesis": "<=2 honest lines"},
   "food": [{"name": "...", "synthesis": "<=1 line"}],
@@ -155,6 +158,11 @@ SHARPENING:
     "independence_character": 0, "price_tier": 0, "review_quality": 0,
     "food_proximity_quality": 0, "food_recency": 0,
     "town_charm": 0, "riding_context": 0
+  },
+  "notes": {
+    "independence_character": "<=16 words, concrete", "price_tier": "...",
+    "review_quality": "...", "food_proximity_quality": "...", "food_recency": "...",
+    "town_charm": "...", "riding_context": "..."
   },
   "total": 0.0,
   "band": "route-worthy|acceptable|marginal|filter-out",
@@ -312,7 +320,19 @@ def _print_score(r: dict, lodging: list[dict]) -> None:
     print(f"  food    | proximity {g('food_proximity_quality')}/2  "
           f"recency {g('food_recency')}/1")
     print(f"  town    | charm {g('town_charm')}/2  "
-          f"riding {g('riding_context')}/1\n")
+          f"riding {g('riding_context')}/1")
+    notes = r.get("notes") or {}
+    if notes:
+        labels = {
+            "independence_character": "indep", "price_tier": "price", "review_quality": "reviews",
+            "food_proximity_quality": "food", "food_recency": "recency",
+            "town_charm": "charm", "riding_context": "riding",
+        }
+        print("  why:")
+        for k, lbl in labels.items():
+            if notes.get(k):
+                print(f"    {lbl:>7} {g(k)} — {notes[k]}")
+    print()
 
     bl = r.get("best_lodging") or {}
     detail = next((d for d in lodging if d.get("name") == bl.get("name")), {})

@@ -65,20 +65,21 @@ def store_verdict(conn, town, state, geoid, mode, lat, lon, r):
             """
             INSERT INTO town_verdicts
                 (town, state, geoid, mode, lat, lon, location,
-                 total, band, scores, best_lodging, food, reason, tip, verdict, evaluated_at)
+                 total, band, scores, notes, best_lodging, food, reason, tip, verdict, evaluated_at)
             VALUES
                 (%s, %s, %s, %s, %s, %s, ST_SetSRID(ST_MakePoint(%s, %s), 4326)::geography,
-                 %s, %s, %s, %s, %s, %s, %s, %s, now())
+                 %s, %s, %s, %s, %s, %s, %s, %s, %s, now())
             ON CONFLICT (town, state, mode) DO UPDATE SET
                 geoid = EXCLUDED.geoid, lat = EXCLUDED.lat, lon = EXCLUDED.lon,
                 location = EXCLUDED.location, total = EXCLUDED.total, band = EXCLUDED.band,
-                scores = EXCLUDED.scores, best_lodging = EXCLUDED.best_lodging,
-                food = EXCLUDED.food, reason = EXCLUDED.reason, tip = EXCLUDED.tip,
+                scores = EXCLUDED.scores, notes = EXCLUDED.notes,
+                best_lodging = EXCLUDED.best_lodging, food = EXCLUDED.food,
+                reason = EXCLUDED.reason, tip = EXCLUDED.tip,
                 verdict = EXCLUDED.verdict, evaluated_at = now()
             """,
             [
                 town, state, geoid, mode, lat, lon, lon, lat,
-                r.get("total"), r.get("band"), Jsonb(r.get("scores")),
+                r.get("total"), r.get("band"), Jsonb(r.get("scores")), Jsonb(r.get("notes")),
                 Jsonb(r.get("best_lodging")), Jsonb(r.get("food")),
                 r.get("reason"), r.get("tip"), Jsonb(r),
             ],

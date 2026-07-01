@@ -26,7 +26,8 @@
   .b-marginal { background: var(--marginal); color:#222; } .b-filter { background: var(--filter); }
   .score { font-size: 30px; font-weight: 700; }
   .dim { display: grid; grid-template-columns: 92px 1fr 30px; gap: 6px; align-items: center;
-         font-size: 12px; margin: 3px 0; }
+         font-size: 12px; margin: 6px 0 1px; }
+  .dim-why { color: var(--muted); font-size: 11.5px; margin: 0 0 6px 92px; }
   .bar { height: 7px; background: #303a44; border-radius: 4px; overflow: hidden; }
   .bar > i { display: block; height: 100%; background: #5b9bd5; }
   .card { background: #171c22; border: 1px solid #2a323b; border-radius: 8px; padding: 10px 12px;
@@ -90,10 +91,11 @@ function sv(lat, lon) { return `https://www.google.com/maps/@?api=1&map_action=p
 function render(r) {
   const [cls, , label] = BANDS[r.band] || ["", "", r.band];
   const bl = r.best_lodging || {};
-  const dims = (r.scores || {});
+  const dims = (r.scores || {}), notes = (r.notes || {});
   const dimRows = DIMS.map(([k, lbl, max]) => {
     const v = dims[k] ?? 0, pct = Math.round((v / max) * 100);
-    return `<div class="dim"><span>${lbl}</span><span class="bar"><i style="width:${pct}%"></i></span><span>${v}/${max}</span></div>`;
+    const why = notes[k] ? `<div class="dim-why">${notes[k]}</div>` : "";
+    return `<div class="dim"><span>${lbl}</span><span class="bar"><i style="width:${pct}%"></i></span><span>${v}/${max}</span></div>${why}`;
   }).join("");
   const foods = (r.food || []).map(f =>
     `<div class="card"><h3>🍴 ${f.name || ""}</h3><div class="syn">${f.synthesis || ""}</div></div>`).join("");
@@ -142,7 +144,7 @@ function legend() {
 
 document.getElementById("find").oninput = draw;
 
-fetch(`${API}/town_verdicts?select=town,state,mode,lat,lon,total,band,scores,best_lodging,food,reason,tip,evaluated_at&lat=not.is.null`)
+fetch(`${API}/town_verdicts?select=town,state,mode,lat,lon,total,band,scores,notes,best_lodging,food,reason,tip,evaluated_at&lat=not.is.null`)
   .then(r => r.json())
   .then(data => { rows = data; legend(); draw(); })
   .catch(e => { document.getElementById("panel").innerHTML =

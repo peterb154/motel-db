@@ -50,7 +50,8 @@ def score_town(name: str, lat: float, lon: float, mode: str) -> dict:
     return r
 
 
-def area_search(center: str, radius_mi: float, mode: str, limit: int | None = None):
+def area_search(center: str, radius_mi: float, mode: str, limit: int | None = None,
+                refresh: bool = False):
     lat, lon, display = places.geocode(center)
     print(f"\n=== area: {center}  ({radius_mi:.0f} mi, mode={mode}) ===")
     print(f"center: {display}  ({lat:.4f}, {lon:.4f})\n")
@@ -64,7 +65,7 @@ def area_search(center: str, radius_mi: float, mode: str, limit: int | None = No
     hits = scored = 0
     results = []
     for c in candidates:
-        cached = cache.get_cached(conn, c["name"], c["state"], mode)
+        cached = None if refresh else cache.get_cached(conn, c["name"], c["state"], mode)
         if cached:
             r, src = cached, "cache"
             hits += 1
@@ -129,11 +130,12 @@ def main() -> int:
         return 2
     center, radius = pos[0], float(pos[1])
     mode = "couple" if ({"--couple", "--car"} & flags) else "moto"
+    refresh = "--refresh" in flags
     limit = None
     for a in argv:
         if a.startswith("--limit"):
             limit = int(a.split("=")[1]) if "=" in a else int(pos[2])
-    area_search(center, radius, mode, limit)
+    area_search(center, radius, mode, limit, refresh=refresh)
     return 0
 
 
