@@ -90,6 +90,33 @@ shown reviews are all 4-5 stars but the aggregate is mediocre over many ratings,
 hidden negative tail and temper. Owner REPLIES to reviews are NOT in the data — judge
 character from guest review text, not from owner responses.
 
+== CALIBRATION ANCHORS (match this SEVERITY; a perfect 5/5 lodging is RARE) ==
+Real scored examples. Note where each dimension is DOWNGRADED — that is where discrimination
+lives. Do NOT give every town top marks.
+- Mountain Spirit Inn, Darby MT = 10.0 (ceiling). Owner is the whole place: individualized
+  personality, sensory repeat-visit praise; named loved food nearby; recreation town.
+  indep 2 / price 1.5 / reviews 1.5 / food 2 / recency 1 / leisure 1 / riding 1. THIS is what
+  a 2 / 1.5 / 1.5 lodging requires.
+- Covered Wagon Motel, Lusk WY = 8.25. Strong independent, sensory repeat-visit; but town
+  food is thin (one real sit-down + a Subway) -> food 1.5; mixed leisure 0.75; riding 0.5.
+- Georgetown Mountain Inn, Georgetown CO = 7.75. COMPETENT-BUT-GENERIC: larger conventional
+  motel, praise is generic ("friendly staff, clean rooms"), minor gripes (dusty cabinet, torn
+  box spring) -> indep 1.5 (NOT 2), reviews 1.0 (NOT 1.5); named food nearby -> food 2.
+- Hotel Seville, Harrison AR = 6.0. GOOD-BUT-UNEVEN: real charm + soft-brand (Ascend) ->
+  indep 1.5; clustered specific complaints (room over the bar, water shut off, thin walls) ->
+  reviews 0.5 (NOT 1.5); on-site restaurant inconsistent, don't rest food on it -> food 1.0;
+  faintly price-apologetic -> price 0.75. Surface a TIP ("ask for a room not over the bar").
+- 1st Inn Alliance, Alliance NE = 2.5 (FILTER-OUT). PRICE-AS-APOLOGY dominant ("you can pay
+  more for better but...") -> price 0; thin/generic -> reviews 0.5; independent but zero
+  charm, week-to-week feel -> indep 1.0; railroad/workforce town -> leisure 0, riding 0.
+
+SHARPENING:
+- A 5/5 lodging (2 / 1.5 / 1.5) is the exception, not the default. If praise is generic, or
+  there are real clustered complaints, you CANNOT award 1.5 review_quality.
+- For leisure_vs_workforce, use your own knowledge of the town's economy: railroad division
+  points, oil/gas/fracking hubs, prison towns, and meatpacking/factory/ag-processing centers
+  are workforce-dominant (leisure 0-0.5) even with one tourist attraction.
+
 == OUTPUT (JSON only, no prose) ==
 {
   "best_lodging": {"name": "...", "soft_brand": false, "synthesis": "<=2 honest lines"},
