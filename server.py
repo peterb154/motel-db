@@ -8,9 +8,11 @@ the FastAPI /chat + tools + email get added on top for the LXC step.
 from __future__ import annotations
 
 import json
+import os
+import time
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -19,7 +21,26 @@ import cache
 
 load_dotenv(override=True)
 
-app = FastAPI(title="motel-db")
+app = FastAPI(title="waypoint")
+
+
+@app.get("/api/health")
+def health():
+    """Liveness + which commit is deployed (surfaced by the deploy pipeline)."""
+    return {"status": "ok", "commit": os.environ.get("GIT_SHA", "dev")}
+
+
+@app.post("/api/deploy")
+def deploy(authorization: str = Header(default="")):
+    """Bearer-guarded: just touch the host trigger file; the host systemd .path
+    unit does the actual git pull + rebuild (see deploy.sh). No docker.sock here."""
+    token = os.environ.get("DEPLOY_TOKEN")
+    if not token or authorization != f"Bearer {token}":
+        raise HTTPException(status_code=401, detail="unauthorized")
+    trigger = os.environ.get("DEPLOY_TRIGGER", "/opt/waypoint/.deploy-trigger")
+    with open(trigger, "w") as f:
+        f.write(str(int(time.time())))
+    return {"status": "ok"}
 
 _COLS = ("town, state, mode, lat, lon, total, band, scores, notes, best_lodging, food, "
          "reason, tip, evaluated_at")
