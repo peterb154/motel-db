@@ -39,14 +39,18 @@ def score_town(name: str, lat: float, lon: float, mode: str) -> dict:
         lat, lon, places.ATTRACTION_TYPES, radius_m=8000.0, max_results=15
     )
     r = _judge(name, lodging, food, attractions, mode)
-    # Tag the chosen lodging with its coords so the area view can tell which town
-    # actually OWNS it (dedupe satellites that borrow a neighbor's motel).
+    # Tag every named place with its coords (matched from the detail lists), for
+    # dedupe + so each location gets a Street View link / GPS coords in the UI.
     bl = r.get("best_lodging") or {}
     if bl.get("name"):
         d = next((x for x in lodging if x.get("name") == bl["name"]), None)
         if d:
             bl["lat"], bl["lon"] = d.get("lat"), d.get("lon")
             r["best_lodging"] = bl
+    for item in r.get("food") or []:
+        d = next((x for x in food if x.get("name") == item.get("name")), None)
+        if d:
+            item["lat"], item["lon"] = d.get("lat"), d.get("lon")
     return r
 
 

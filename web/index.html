@@ -25,15 +25,23 @@
   .b-route { background: var(--route); } .b-accept { background: var(--accept); }
   .b-marginal { background: var(--marginal); color:#222; } .b-filter { background: var(--filter); }
   .score { font-size: 30px; font-weight: 700; }
+  .dimwrap { margin: 5px 0; }
+  .dimwrap.has { cursor: help; }
   .dim { display: grid; grid-template-columns: 92px 1fr 30px; gap: 6px; align-items: center;
-         font-size: 12px; margin: 6px 0 1px; }
-  .dim-why { color: var(--muted); font-size: 11.5px; margin: 0 0 6px 92px; }
+         font-size: 12px; }
+  .dimwrap.has .dim > span:first-child { border-bottom: 1px dotted #55606b; }
+  .dim-why { display: none; color: var(--muted); font-size: 11.5px; margin: 4px 0 2px 92px;
+             border-left: 2px solid #3a4552; padding-left: 8px; }
+  .dimwrap.has:hover .dim-why, .dimwrap.show .dim-why { display: block; }
   .bar { height: 7px; background: #303a44; border-radius: 4px; overflow: hidden; }
   .bar > i { display: block; height: 100%; background: #5b9bd5; }
   .card { background: #171c22; border: 1px solid #2a323b; border-radius: 8px; padding: 10px 12px;
           margin: 8px 0; }
   .card h3 { margin: 0 0 4px; font-size: 14px; }
   .card .syn { color: var(--muted); font-size: 12.5px; }
+  .links { margin-top: 6px; font-size: 12px; }
+  .coord { font-family: ui-monospace, SFMono-Regular, monospace; color: #cdd6df; user-select: all;
+           -webkit-user-select: all; }
   a { color: #7cb8ff; text-decoration: none; } a:hover { text-decoration: underline; }
   .tip { background: #23303a; border-left: 3px solid #5b9bd5; padding: 8px 10px; border-radius: 4px;
          font-size: 13px; margin-top: 10px; }
@@ -87,6 +95,7 @@ function color(band) { return getComputedStyle(document.documentElement)
   .getPropertyValue((BANDS[band] || ["", "#888"])[1].replace(/var\((.*)\)/, "$1").trim() || "--muted") || "#888"; }
 
 function sv(lat, lon) { return `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lon}`; }
+function gmaps(q) { return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`; }
 
 function render(r) {
   const [cls, , label] = BANDS[r.band] || ["", "", r.band];
@@ -94,24 +103,33 @@ function render(r) {
   const dims = (r.scores || {}), notes = (r.notes || {});
   const dimRows = DIMS.map(([k, lbl, max]) => {
     const v = dims[k] ?? 0, pct = Math.round((v / max) * 100);
+    const has = notes[k] ? "has" : "";
     const why = notes[k] ? `<div class="dim-why">${notes[k]}</div>` : "";
-    return `<div class="dim"><span>${lbl}</span><span class="bar"><i style="width:${pct}%"></i></span><span>${v}/${max}</span></div>${why}`;
+    return `<div class="dimwrap ${has}"><div class="dim"><span>${lbl}</span><span class="bar"><i style="width:${pct}%"></i></span><span>${v}/${max}</span></div>${why}</div>`;
   }).join("");
+  const hint = Object.keys(notes).length
+    ? `<div style="font-size:11px;color:var(--muted);margin:2px 0 4px">hover / tap a dimension for why</div>` : "";
+  const coord = (la, lo) => `<span class="coord" title="tap to select for your GPS">${(+la).toFixed(5)}, ${(+lo).toFixed(5)}</span>`;
+  const plinks = (name, la, lo) => {
+    const out = [`<a href="${gmaps(name + ', ' + r.town + ', ' + r.state)}" target="_blank">Maps ↗</a>`];
+    if (la != null) out.push(`<a href="${sv(la, lo)}" target="_blank">Street View ↗</a>`, coord(la, lo));
+    return `<div class="links">${out.join(" · ")}</div>`;
+  };
   const foods = (r.food || []).map(f =>
-    `<div class="card"><h3>🍴 ${f.name || ""}</h3><div class="syn">${f.synthesis || ""}</div></div>`).join("");
+    `<div class="card"><h3>🍴 ${f.name || ""}</h3><div class="syn">${f.synthesis || ""}</div>
+     ${plinks(f.name, f.lat, f.lon)}</div>`).join("");
   const lodging = bl.name ? `<div class="card"><h3>🛏 ${bl.name} ${bl.soft_brand ? "· soft-brand" : ""}</h3>
-      <div class="syn">${bl.synthesis || ""}</div>
-      ${bl.lat ? `<div style="margin-top:6px"><a href="${sv(bl.lat, bl.lon)}" target="_blank">Street View ↗</a></div>` : ""}</div>` : "";
+      <div class="syn">${bl.synthesis || ""}</div>${plinks(bl.name, bl.lat, bl.lon)}</div>` : "";
   document.getElementById("panel").innerHTML = `
     <h1>${r.town}, ${r.state}</h1>
-    <div class="sub">${r.mode || "moto"} · evaluated ${(r.evaluated_at || "").slice(0,10)}</div>
+    <div class="sub">${r.mode || "moto"} · evaluated ${(r.evaluated_at || "").slice(0,10)} · ${coord(r.lat, r.lon)}</div>
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
       <span class="score">${r.total}</span><span style="color:var(--muted)">/10</span>
       <span class="chip ${cls}">${label}</span>
       <a style="margin-left:auto" href="https://www.google.com/maps/search/?api=1&query=${r.lat},${r.lon}" target="_blank">map ↗</a>
     </div>
     <div style="color:var(--muted);font-size:13px;margin-bottom:10px">${r.reason || ""}</div>
-    ${dimRows}
+    ${hint}${dimRows}
     ${lodging}${foods}
     ${r.tip ? `<div class="tip">💡 ${r.tip}</div>` : ""}`;
 }
@@ -143,6 +161,12 @@ function legend() {
 }
 
 document.getElementById("find").oninput = draw;
+
+// tap-to-toggle a dimension's "why" (touch devices where hover doesn't exist)
+document.getElementById("panel").addEventListener("click", (e) => {
+  const w = e.target.closest(".dimwrap.has");
+  if (w) w.classList.toggle("show");
+});
 
 fetch(`${API}/town_verdicts?select=town,state,mode,lat,lon,total,band,scores,notes,best_lodging,food,reason,tip,evaluated_at&lat=not.is.null`)
   .then(r => r.json())
