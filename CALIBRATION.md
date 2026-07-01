@@ -238,14 +238,34 @@ hotel's own restaurant.
     on the model's own knowledge of the town plus review mentions of
     "historic downtown / main street / festival," with the attractions list
     as context only.
+11. **Food: judge DINNER, and destination vs. eat-fine.** Score for a rider
+    arriving in the evening wanting dinner. A "scene" that's mostly coffee /
+    ice-cream / bakery / deli / daytime-only spots is LIMITED (1.0), not a
+    food town. Reserve the full 2.0 for a genuine *destination* — the best
+    non-chain dinner spot rating ~4.7+ (or unmistakably raved about); a
+    normal small town with real restaurants topping out at 4.4–4.6 is 1.5
+    ("you'll eat fine"). Review COUNT is a red herring — a small town funnels
+    all its reviews to the one main spot, so a 4.5 bar & grill with 800+
+    reviews is still 1.5. (Wamego 1.5 vs Georgetown/Valentine 2.0.)
+12. **Select the best SUITABLE lodging, don't just cap the top-rated.** Pick
+    the best motel/hotel/inn as the town's representative even if a B&B or
+    lodge outranks it — the rider books the motel. Only fall back to a B&B
+    (and apply the 0.75 cap) when nothing suitable exists. (Wamego: score the
+    independent hotel, not the higher-rated Victory Inn B&B.)
+13. **Lodging is a GATE, not just a slice.** The tool finds places to SLEEP
+    and eat. A town with NO bookable rider lodging (only vacation rentals /
+    lofts / hunting-package lodges / nothing) is not an overnight candidate,
+    period — cap it near-zero (total 1.5, filter-out) no matter how good the
+    food or charm. A weak or B&B-only town still *counts* as lodging; the
+    gate is only for zero bookable lodging. (St. Marys KS, Dallas SD.)
 
 ## Still needed
-- **More reject variety.** Alliance NE now scores 3.5 (filter-out) — our
-  first working reject, via the workforce/no-charm + B&B-downgrade path.
-  Still want rejects that fail a *different* way (e.g. a town that scores
-  fine on lodging + charm but has genuinely dead food, or a tourist-trap
-  town that's all chains behind a charming facade) to confirm the rubric
-  catches more than one failure mode.
+- **Reject variety: covered (for now).** Three distinct failure modes are
+  confirmed — workforce/no-charm (Alliance NE 3.5), no-bookable-lodging
+  hunting town (Dallas SD 1.5), and destination-food-but-no-bed (St. Marys
+  KS 1.5). Still worth finding: a town that scores fine on lodging + charm
+  but has genuinely *dead food*, and a tourist-trap that's all chains behind
+  a charming facade.
 
 ---
 
@@ -273,12 +293,23 @@ Town 3.
 - 0.5 — Positive-but-generic, OR good-but-uneven (real praise beside real clustered complaints — don't auto-fail)
 - 0 — Thin, generic, or dominant complaint pattern
 
+### Lodging GATE
+
+Before scoring, check for bookable rider lodging. If the town has NO suitable
+motel/hotel/inn/lodge worth a look — only vacation rentals, private lofts,
+hunting-package lodges, or nothing — set all lodging scores to 0 and cap the
+**total at 1.5 (filter-out)**, regardless of food or charm. A weak or B&B-only
+town still counts (see B&B RULE); the gate is only for *zero* bookable lodging.
+Selection: pick the best *suitable* option (motel/hotel/inn) as representative
+even if a B&B/lodge outranks it; only fall to a B&B (0.75 cap) when nothing
+suitable exists.
+
 ### Food (3 pts)
 
-**Proximity & Quality (0–2)**
-- 2 — Non-chain restaurant within walking distance, specifically named in lodging reviews
-- 1.5 — Good food nearby, mentioned in reviews but not named
-- 1.0 — Food exists, not mentioned in lodging reviews
+**Proximity & Quality (0–2)** — judge an evening DINNER arrival
+- 2 — A genuine non-chain *destination*: best dinner spot ~4.7+ or unmistakably raved about (count alone doesn't qualify)
+- 1.5 — Solid real dinner options (bar & grill / Mexican / diner / BBQ, ~4.4–4.6) — you'll eat fine, not a destination. DEFAULT for a normal small town.
+- 1.0 — LIMITED: mostly coffee / bakery / ice-cream / deli or daytime-only spots, or a single weak option
 - 0 — Chain-only or dead food scene
 
 **Recency (0–1)**
@@ -302,23 +333,30 @@ Town 3.
 
 ## Town Scores (live model, 2026-07-01)
 
-| Dimension (max) | Alliance NE | Harrison AR | Lusk WY | Darby MT | Georgetown CO | Red Lodge MT |
-|---|---|---|---|---|---|---|
-| Independence & Character (2) | 1.0 | 1.0 | 2.0 | 2.0 | 2.0 | 2.0 |
-| Price Tier (1) | 0.0 | 0.5 | 1.0 | 1.0 | 1.0 | 1.0 |
-| Review Quality (1) | 0.5 | 0.5 | 1.0 | 1.0 | 1.0 | 1.0 |
-| Food Proximity & Quality (2) | 1.0 | 1.5 | 1.0 | 2.0 | 2.0 | 2.0 |
-| Food Recency (1) | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
-| Town Charm (2) | 0.0 | 1.0 | 1.0 | 1.5 | 2.0 | 2.0 |
-| Riding Context (1) | 0.0 | 0.5 | 0.5 | 1.0 | 1.0 | 1.0 |
-| **TOTAL** | **3.5** | **6.0** | **7.5** | **9.5** | **10.0** | **10.0** |
-| **Band** | filter-out | acceptable | acceptable | route-worthy | route-worthy | route-worthy |
-| Best lodging scored | Rainbow Motel | Hotel Seville | Covered Wagon | Darmont Hotel | Clear Creek Inn | The Pollard Hotel |
+Dimensions: Ind = Independence/Character (2), Prc = Price (1), Rev = Review
+Quality (1), Food (2), Rec = Recency (1), Chrm = Charm (2), Rid = Riding (1).
 
-Note: the tool scores the town's best *found* independent lodging, which may
-differ from a specific property Brian had in mind (e.g. Alliance is scored on
-Rainbow Motel after the B&B cap drops Grandma Lala's; Georgetown on Clear Creek
-Inn). Relative ordering and bands are what matter.
+| Town | Ind | Prc | Rev | Food | Rec | Chrm | Rid | Total | Band | Lodging scored |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Georgetown, CO | 2 | 1 | 1 | 2 | 1 | 2 | 1 | **10.0** | route-worthy | Clear Creek Inn |
+| Red Lodge, MT | 2 | 1 | 1 | 2 | 1 | 2 | 1 | **10.0** | route-worthy | The Pollard Hotel |
+| Darby, MT | 2 | 1 | 1 | 2 | 1 | 1.5 | 1 | **9.5** | route-worthy | Darmont Hotel |
+| Valentine, NE | 2 | 1 | 1 | 2 | 1 | 1.5 | 1 | **9.5** | route-worthy | Trade Winds Motel |
+| Crawford, NE | 2 | 1 | 1 | 1.5 | 1 | 2 | 1 | **9.5** | route-worthy | Hilltop Motel |
+| Lusk, WY | 2 | 1 | 1 | 1.5 | 1 | 1 | 0.5 | **8.0** | route-worthy | Covered Wagon Motel |
+| Wamego, KS | 1 | 0.5 | 0.5 | 1.5 | 1 | 1.5 | 0.5 | **6.5** | acceptable | Wamego Inn & Suites |
+| Harrison, AR | 1 | 0.5 | 0.5 | 1.5 | 1 | 1 | 0.5 | **6.0** | acceptable | Hotel Seville |
+| Alliance, NE | 1 | 0 | 0.5 | 1 | 1 | 0 | 0 | **3.5** | filter-out | Rainbow Motel |
+| Dallas, SD | 0 | 0 | 0 | (1.5) | 1 | (0) | 0 | **1.5** | filter-out | GATE — hunting lodges, no bed |
+| St. Marys, KS | 0 | 0 | 0 | (2) | 1 | (1.5) | 0.5 | **1.5** | filter-out | GATE — vacation rentals only |
+
+Notes:
+- The tool scores the town's best *found* suitable lodging, which may differ from
+  a specific property Brian had in mind (e.g. Georgetown on Clear Creek Inn).
+  Relative ordering and bands are what matter.
+- Dallas / St. Marys hit the **lodging gate**: parenthesized food/charm are their
+  raw dimension reads, but with no bookable bed the total is capped at 1.5.
+- Expect ~±0.5 run-to-run jitter on mid towns (LLM temperature 0.2); bands are stable.
 
 **Score interpretation:**
 - 8–10: Route-worthy — build a day around this town
