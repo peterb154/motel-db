@@ -32,8 +32,32 @@ services:
       - "3001:3000"
     restart: unless-stopped
 
-  # agent (FastAPI /chat) is added with the LXC deploy step; local scoring runs
-  # from the host against the db above.
+  # Lean FastAPI server (server.py). Entrypoint waits for db, runs migrations
+  # + town ingest, then serves uvicorn. /api/deploy writes the trigger file on
+  # the mounted host repo; a host-side systemd path unit handles the rebuild.
+  agent:
+    build:
+      context: .
+      args:
+        # Stamp the current git SHA into the image so /api/health can report it.
+        GIT_SHA: ${GIT_SHA:-dev}
+    image: waypoint-agent:local
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      STRANDS_PG_DSN: postgresql://strands:strands@db:5432/strands
+      DEPLOY_TRIGGER: /opt/waypoint/.deploy-trigger
+    volumes:
+      # Mount the host's repo checkout so /api/deploy can touch the trigger
+      # file there. A host-side systemd path unit watches it and handles git
+      # pull + rebuild. No docker.sock, no ssh keys needed in the container.
+      - .:/opt/waypoint
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
 
 volumes:
   pgdata:
