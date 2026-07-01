@@ -253,6 +253,11 @@ $("sw-go").onclick = () => {
     btn.disabled = false; btn.textContent = "Sweep"; if (es) es.close(); };
 };
 map.on("click", e => openSweep(e.latlng));
+// keep clicks on the UI overlays from falling through to the map
+["sweepbox", "bar", "legend"].forEach(id => {
+  const el = $(id);
+  if (el) { L.DomEvent.disableClickPropagation(el); L.DomEvent.disableScrollPropagation(el); }
+});
 
 function load() {
   return fetch(`${API}/api/verdicts`).then(r => r.json())
