@@ -38,34 +38,39 @@ independent food candidates. Great lodging in a town with no real food is not a 
 and vice versa.
 
 == SCORING RUBRIC (sum the points to 0-10) ==
+The rider is on a MOTORCYCLE. Ideal lodging is an independent MOTEL or a classic independent
+HOTEL / lodge / inn. A bed & breakfast, guest house, private room, or single-cabin rental is
+NOT typical moto-trip lodging — see the B&B rule.
 
-LODGING (5 pts), scored on the best independent lodging:
-- independence_character (0-2): 2 = clearly independent, character evident in reviews (named
-  owner, specific decor, personality-driven praise); 1 = independent but generic execution,
-  OR a soft-brand-affiliated independent (Ascend, Tapestry, Tribute Portfolio, Curio,
-  Autograph, Unbound — own identity, chain booking system); 0 = a real chain.
-- price_tier (0-1.5): 1.5 = no price-apologetics (price unmentioned, or a pleasant surprise
-  for the value); 0.75 = mixed; 0 = price-as-apology dominant ("decent for the money", "you
-  can pay more for better", "budget option but").
-- review_quality (0-1.5): 1.5 = specific, sensory, repeat-visit; complaints (if any) specific
-  and offset by specific praise; 1.0 = positive but generic; 0.5 = real praise alongside real
-  clustered complaints (legit "good but uneven" — do NOT auto-fail); 0 = thin, generic, or a
-  dominant complaint pattern.
+LODGING (4 pts), scored on the best SUITABLE independent lodging:
+- independence_character (0-2): 2 = clearly independent motel/hotel/inn, character evident in
+  reviews (named owner, specific decor, personality-driven praise); 1 = independent but generic
+  execution, OR soft-brand-affiliated (Ascend, Tapestry, Tribute Portfolio, Curio, Autograph,
+  Unbound); 0 = a real chain. B&B RULE: if the best option is a bed_and_breakfast / guest_house
+  / private room / single cabin, CAP this at 0.75 and say so — a rider wouldn't normally book
+  one, and a town whose only good lodging is a B&B cannot be route-worthy on lodging.
+- price_tier (0-1): 1 = no price-apologetics; 0.5 = mixed; 0 = price-as-apology dominant
+  ("decent for the money", "you can pay more for better", "budget option but").
+- review_quality (0-1): 1 = specific, sensory, repeat-visit, complaints (if any) specific and
+  offset by specific praise; 0.5 = positive-but-generic OR good-but-uneven (real praise beside
+  real clustered complaints — do NOT auto-fail); 0 = thin, generic, or dominant complaints.
 
 FOOD (3 pts):
 - food_proximity_quality (0-2): 2 = non-chain restaurant within walking distance, specifically
   NAMED in the lodging reviews; 1.5 = good food nearby, mentioned but not named; 1.0 = food
   exists but not mentioned in lodging reviews; 0 = chain-only or dead food scene.
-- food_recency (0-1): 1.0 = strong reviews within ~18 months; 0.5 = older/mixed; 0 = no recent
+- food_recency (0-1): 1 = strong reviews within ~18 months; 0.5 = older/mixed; 0 = no recent
   signal or signs of closure. (Each review carries `when`, e.g. "4 months ago".)
 
-TOWN FIT (2 pts):
-- leisure_vs_workforce (0-1): 1 = through-travelers/recreationists/road-trippers/repeat
-  leisure visitors dominate; 0.5 = mixed; 0 = workforce/industrial dominant, weekly-rate
-  pattern common in the ACTUAL reviews.
+TOWN (3 pts):
+- town_charm (0-2): the town's character as a place to spend an evening. 2 = charming — a
+  walkable historic downtown, a real arts/festival culture, or a genuine recreation destination
+  (weigh the `town_attractions` list, YOUR OWN knowledge of the town, and review mentions of
+  "historic downtown / main street / festival"). 1 = some draw but ordinary. 0 = workforce /
+  industrial / transit town with no real center. A single famous roadside oddity (a big
+  sculpture, one museum) does NOT make a workforce town charming — weigh KIND, not count.
 - riding_context (0-1): 1 = on/near good riding, or reviews mention riding/outdoor recreation
-  unprompted; 0.5 = general outdoor/tourism, no specific riding signal; 0 = pure transit or
-  freight town.
+  unprompted; 0.5 = general outdoor/tourism; 0 = pure transit or freight town.
 
 band: total >= 8 "route-worthy"; 6-7.99 "acceptable"; 4-5.99 "marginal"; < 4 "filter-out".
 
@@ -90,32 +95,34 @@ shown reviews are all 4-5 stars but the aggregate is mediocre over many ratings,
 hidden negative tail and temper. Owner REPLIES to reviews are NOT in the data — judge
 character from guest review text, not from owner responses.
 
-== CALIBRATION ANCHORS (match this SEVERITY; a perfect 5/5 lodging is RARE) ==
-Real scored examples. Note where each dimension is DOWNGRADED — that is where discrimination
-lives. Do NOT give every town top marks.
-- Mountain Spirit Inn, Darby MT = 10.0 (ceiling). Owner is the whole place: individualized
-  personality, sensory repeat-visit praise; named loved food nearby; recreation town.
-  indep 2 / price 1.5 / reviews 1.5 / food 2 / recency 1 / leisure 1 / riding 1. THIS is what
-  a 2 / 1.5 / 1.5 lodging requires.
-- Covered Wagon Motel, Lusk WY = 8.25. Strong independent, sensory repeat-visit; but town
-  food is thin (one real sit-down + a Subway) -> food 1.5; mixed leisure 0.75; riding 0.5.
-- Georgetown Mountain Inn, Georgetown CO = 7.75. COMPETENT-BUT-GENERIC: larger conventional
-  motel, praise is generic ("friendly staff, clean rooms"), minor gripes (dusty cabinet, torn
-  box spring) -> indep 1.5 (NOT 2), reviews 1.0 (NOT 1.5); named food nearby -> food 2.
-- Hotel Seville, Harrison AR = 6.0. GOOD-BUT-UNEVEN: real charm + soft-brand (Ascend) ->
-  indep 1.5; clustered specific complaints (room over the bar, water shut off, thin walls) ->
-  reviews 0.5 (NOT 1.5); on-site restaurant inconsistent, don't rest food on it -> food 1.0;
-  faintly price-apologetic -> price 0.75. Surface a TIP ("ask for a room not over the bar").
-- 1st Inn Alliance, Alliance NE = 2.5 (FILTER-OUT). PRICE-AS-APOLOGY dominant ("you can pay
-  more for better but...") -> price 0; thin/generic -> reviews 0.5; independent but zero
-  charm, week-to-week feel -> indep 1.0; railroad/workforce town -> leisure 0, riding 0.
+== CALIBRATION ANCHORS (dimensions on the NEW weights; downgrades are where discrimination
+lives — do NOT give every town top marks) ==
+- Mountain Spirit Inn, Darby MT ~= 9.5 (route-worthy). Owner-personality inn, sensory
+  repeat-visit praise; named loved food nearby; recreation town.
+  indep 2 / price 1 / reviews 1 / food 2 / recency 1 / charm 1.5 / riding 1.
+- Covered Wagon Motel, Lusk WY ~= 7.5 (acceptable). Strong independent motel; town food thin
+  (one sit-down + a Subway) -> food 1; small ranch/festival town -> charm 1; riding 0.5.
+  indep 2 / price 1 / reviews 1 / food 1 / recency 1 / charm 1 / riding 0.5.
+- Georgetown Mountain Inn, Georgetown CO ~= 8.0 (route-worthy). COMPETENT-BUT-GENERIC motel
+  (generic praise, minor gripes) -> indep 1.5, reviews 0.5; but a genuinely charming preserved
+  Victorian mining town -> charm 2; named food nearby -> food 2.
+  indep 1.5 / price 1 / reviews 0.5 / food 2 / recency 1 / charm 2 / riding 1.
+- Hotel Seville, Harrison AR ~= 6.0 (acceptable). GOOD-BUT-UNEVEN hotel, soft-brand -> indep 1;
+  clustered specific complaints (room over the bar, water shut off, thin walls) -> reviews 0.5;
+  faintly price-apologetic -> price 0.5; Ozark/Branson-gateway tourism -> charm 1. TIP: "ask
+  for a room not over the bar". indep 1 / price 0.5 / reviews 0.5 / food 1.5 / recency 1 /
+  charm 1 / riding 0.5.
+- 1st Inn Alliance, Alliance NE ~= 2.0 (FILTER-OUT). PRICE-AS-APOLOGY dominant -> price 0;
+  thin/generic -> reviews 0.5; independent but zero charm, week-to-week feel -> indep 0.5;
+  railroad/workforce town, Carhenge is an isolated roadside oddity -> charm 0, riding 0; weak
+  food -> food 0.5. indep 0.5 / price 0 / reviews 0.5 / food 0.5 / recency 0.5 / charm 0 / riding 0.
 
 SHARPENING:
-- A 5/5 lodging (2 / 1.5 / 1.5) is the exception, not the default. If praise is generic, or
-  there are real clustered complaints, you CANNOT award 1.5 review_quality.
-- For leisure_vs_workforce, use your own knowledge of the town's economy: railroad division
-  points, oil/gas/fracking hubs, prison towns, and meatpacking/factory/ag-processing centers
-  are workforce-dominant (leisure 0-0.5) even with one tourist attraction.
+- Top lodging marks are the exception. Generic praise or clustered complaints CANNOT earn full
+  review_quality. A B&B as the best option caps independence_character at 0.75 (B&B RULE).
+- For town_charm, use your own knowledge of the town's economy: railroad division points,
+  oil/gas/fracking hubs, prison towns, and meatpacking/factory/ag-processing centers are
+  workforce towns (charm 0-1) even with one famous attraction.
 
 == OUTPUT (JSON only, no prose) ==
 {
@@ -124,7 +131,7 @@ SHARPENING:
   "scores": {
     "independence_character": 0, "price_tier": 0, "review_quality": 0,
     "food_proximity_quality": 0, "food_recency": 0,
-    "leisure_vs_workforce": 0, "riding_context": 0
+    "town_charm": 0, "riding_context": 0
   },
   "total": 0.0,
   "band": "route-worthy|acceptable|marginal|filter-out",
@@ -152,11 +159,15 @@ def _gather(lat, lon, included_types, top_n, excluded_types=None):
     return detailed, dropped
 
 
-def _judge(town: str, lodging: list[dict], food: list[dict]) -> dict:
+def _judge(town: str, lodging: list[dict], food: list[dict], attractions: list[dict]) -> dict:
     payload = {
         "town": town,
         "lodging_candidates": [_slim(p) for p in lodging],
         "food_candidates": [_slim(p) for p in food],
+        "town_attractions": [
+            {"name": a.get("name"), "type": a.get("primary_type"), "reviews": a.get("reviews")}
+            for a in attractions
+        ],
     }
     client = boto3.client("bedrock-runtime", region_name=os.environ.get("AWS_REGION", "us-east-1"))
     resp = client.converse(
@@ -203,17 +214,21 @@ def main() -> int:
         lat, lon, places.LODGING_TYPES, TOP_N_LODGING, excluded_types=places.LODGING_EXCLUDE_TYPES
     )
     food, food_chains = _gather(lat, lon, places.FOOD_TYPES, TOP_N_FOOD)
+    attractions = places.search_nearby(
+        lat, lon, places.ATTRACTION_TYPES, radius_m=8000.0, max_results=15
+    )
 
     print(f"lodging: {len(lodging)} independent survivors "
           f"({len(lodging_chains)} chains dropped: {_names(lodging_chains)})")
     print(f"food:    {len(food)} independent survivors "
-          f"({len(food_chains)} chains dropped: {_names(food_chains)})\n")
+          f"({len(food_chains)} chains dropped: {_names(food_chains)})")
+    print(f"charm:   {len(attractions)} nearby attractions/cultural sites\n")
 
     if not lodging and not food:
         print("SCORE: 0/10  [filter-out] — no independent lodging or food found.\n")
         return 0
 
-    r = _judge(town, lodging, food)
+    r = _judge(town, lodging, food, attractions)
     _print_score(r, lodging)
     return 0
 
@@ -229,11 +244,11 @@ def _print_score(r: dict, lodging: list[dict]) -> None:
         return s.get(k, 0)
 
     print(f"SCORE: {r.get('total')}/10  [{r.get('band')}] — {r.get('reason')}\n")
-    print(f"  lodging  | indep/char {g('independence_character')}/2  "
-          f"price {g('price_tier')}/1.5  reviews {g('review_quality')}/1.5")
-    print(f"  food     | proximity {g('food_proximity_quality')}/2  "
+    print(f"  lodging | indep/char {g('independence_character')}/2  "
+          f"price {g('price_tier')}/1  reviews {g('review_quality')}/1")
+    print(f"  food    | proximity {g('food_proximity_quality')}/2  "
           f"recency {g('food_recency')}/1")
-    print(f"  town fit | leisure {g('leisure_vs_workforce')}/1  "
+    print(f"  town    | charm {g('town_charm')}/2  "
           f"riding {g('riding_context')}/1\n")
 
     bl = r.get("best_lodging") or {}

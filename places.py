@@ -37,6 +37,19 @@ FOOD_TYPES = ["restaurant", "diner", "cafe", "meal_takeaway", "bar_and_grill"]
 # classic hotel). Keeps hotels, motels, inns, B&Bs, cottages, guest houses.
 LODGING_EXCLUDE_TYPES = ["campground", "rv_park", "mobile_home_park"]
 
+# Cultural/historic/attraction types — context for the town-charm judgment. Count
+# alone doesn't separate charm (a workforce town can have one famous roadside
+# oddity); the judge weighs KIND (walkable historic downtown, arts scene) qualitatively.
+ATTRACTION_TYPES = [
+    "museum",
+    "historical_landmark",
+    "tourist_attraction",
+    "art_gallery",
+    "performing_arts_theater",
+    "visitor_center",
+    "cultural_center",
+]
+
 
 def _api_key() -> str:
     key = os.environ.get("GOOGLE_PLACES_API_KEY")
