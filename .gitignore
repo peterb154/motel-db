@@ -13,3 +13,6 @@ venv/
 
 # OS
 .DS_Store
+
+# vendored framework caches
+strands_pg/**/__pycache__/

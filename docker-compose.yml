@@ -1,0 +1,39 @@
+services:
+  db:
+    build: ./db
+    image: motel-db-db:local
+    environment:
+      POSTGRES_USER: strands
+      POSTGRES_PASSWORD: strands
+      POSTGRES_DB: strands
+    ports:
+      - "5433:5432"          # host 5433 -> avoid clashing with a local pg
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strands -d strands"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # Read-only auto-API over the api schema — feeds the future map UI and lets the
+  # chain blocklist be tuned via curl without a rebuild.
+  postgrest:
+    image: postgrest/postgrest:v12.2.0
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGRST_DB_URI: postgres://strands:strands@db:5432/strands
+      PGRST_DB_SCHEMAS: api
+      PGRST_DB_ANON_ROLE: web_anon
+    ports:
+      - "3001:3000"
+    restart: unless-stopped
+
+  # agent (FastAPI /chat) is added with the LXC deploy step; local scoring runs
+  # from the host against the db above.
+
+volumes:
+  pgdata:
