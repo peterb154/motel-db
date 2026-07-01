@@ -83,7 +83,8 @@ const DIMS = [
   ["food_proximity_quality", "food", 2], ["food_recency", "recency", 1],
   ["town_charm", "charm", 2], ["riding_context", "riding", 1],
 ];
-const map = L.map("map", { zoomControl: true }).setView([44, -90], 5);
+const map = L.map("map", { zoomControl: false }).setView([44, -90], 5);
+L.control.zoom({ position: "topright" }).addTo(map);
 L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
   attribution: "&copy; OpenStreetMap &copy; CARTO", maxZoom: 19,
 }).addTo(map);
