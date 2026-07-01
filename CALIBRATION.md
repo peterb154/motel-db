@@ -223,84 +223,105 @@ hotel's own restaurant.
    the bar," "restaurant under separate management is hit or miss") is
    useful, actionable detail to surface in the verdict, not a reason to
    fail the town.
+9. **Lodging type matters — a rider wouldn't book a B&B.** The ideal is an
+   independent motel or a classic independent hotel/lodge/inn. A bed &
+   breakfast, guest house, private room, or single-cabin rental is not
+   typical motorcycle-trip lodging. If a town's best independent option is
+   one of those, cap its independence/character score (0.75 max) and don't
+   let it carry the town to route-worthy on lodging alone.
+10. **Town charm is its own dimension — measure KIND, not count.** A
+    walkable historic downtown, a real arts/festival culture, or a genuine
+    recreation destination is charm. A single famous roadside oddity (a big
+    sculpture, one museum) in an otherwise workforce/railroad/industrial
+    town is NOT charm — attraction *count* doesn't separate the two
+    (Alliance NE has Carhenge + museums yet zero downtown character). Lean
+    on the model's own knowledge of the town plus review mentions of
+    "historic downtown / main street / festival," with the attractions list
+    as context only.
 
 ## Still needed
-- **A known REJECT for a town that looked fine on paper but Brian knows
-  is a miss** (other than Alliance, which we do have). A second reject
-  example, ideally one that *isn't* the price-apology pattern, would
-  reveal a different failure mode. Without variety in the rejects, the
-  judgment layer only learns to catch one type of bad town.
+- **More reject variety.** Alliance NE now scores 3.5 (filter-out) — our
+  first working reject, via the workforce/no-charm + B&B-downgrade path.
+  Still want rejects that fail a *different* way (e.g. a town that scores
+  fine on lodging + charm but has genuinely dead food, or a tourist-trap
+  town that's all chains behind a charming facade) to confirm the rubric
+  catches more than one failure mode.
 
 ---
 
-## Composite Scoring Model v1
+## Composite Scoring Model v2 (LIVE — matches verdict.py)
 
-Output: a score from 0–10. Towns scoring below ~5 are filtered out.
-Towns scoring 7+ are strong candidates. 5–7 are "acceptable if the
-corridor goes there, wouldn't build a day around it."
+Output: a score from 0–10. Scored on the town's best SUITABLE independent
+lodging plus the town's food and character. Weights: Lodging 4 / Food 3 /
+Town 3.
 
-### Lodging (5 pts)
+### Lodging (4 pts)
 
-**Independence & Character (2 pts)**
-- 2 — Clearly independent, character evident in reviews (named owner, specific decor, personality-driven praise, owner responses individualized)
-- 1 — Independent but generic execution, or soft-brand affiliated (Ascend, Tapestry, Tribute Portfolio, Curio, Autograph Collection)
+**Independence & Character (0–2)**
+- 2 — Clearly independent motel/hotel/inn, character evident in reviews (named owner, specific decor, personality-driven praise)
+- 1 — Independent but generic execution, OR soft-brand affiliated (Ascend, Tapestry, Tribute Portfolio, Curio, Autograph, Unbound)
 - 0 — Chain (blocklist hit, excluding soft-brand exceptions)
+- **B&B RULE:** if the best option is a bed & breakfast / guest house / private room / single cabin, cap this at **0.75** — a rider wouldn't normally book one, and a town whose only good lodging is a B&B can't be route-worthy on lodging.
 
-**Price Tier Signal (1.5 pts)**
-- 1.5 — No price-apologetics; price not mentioned or mentioned as pleasant surprise for value delivered
-- 0.75 — Mixed: some value-qualified praise offset by unqualified praise
+**Price Tier (0–1)**
+- 1 — No price-apologetics; price unmentioned or a pleasant surprise for the value
+- 0.5 — Mixed
 - 0 — Price-as-apology dominant ("decent for the money," "you can pay more for better," "budget option but")
 
-**Review Quality (1.5 pts)**
-- 1.5 — Specific, sensory, repeat-visit; owner responses individualized; complaints if present are specific and offset by equally specific praise
-- 1.0 — Generally positive but generic
-- 0.5 — Mixed: real praise alongside real clustered complaints (legitimate "good but uneven" — don't auto-fail)
+**Review Quality (0–1)**
+- 1 — Specific, sensory, repeat-visit; complaints (if any) specific and offset by specific praise
+- 0.5 — Positive-but-generic, OR good-but-uneven (real praise beside real clustered complaints — don't auto-fail)
 - 0 — Thin, generic, or dominant complaint pattern
 
 ### Food (3 pts)
 
-**Proximity & Quality (2 pts)**
+**Proximity & Quality (0–2)**
 - 2 — Non-chain restaurant within walking distance, specifically named in lodging reviews
-- 1.5 — Good food nearby, mentioned in reviews but not named/specific
+- 1.5 — Good food nearby, mentioned in reviews but not named
 - 1.0 — Food exists, not mentioned in lodging reviews
-- 0 — Chain-only, dead food scene, or poor on-site only option
+- 0 — Chain-only or dead food scene
 
-**Recency (1 pt)**
-- 1.0 — Strong reviews within 18 months
-- 0.5 — Older reviews or mixed recency
+**Recency (0–1)**
+- 1 — Strong reviews within ~18 months
+- 0.5 — Older or mixed recency
 - 0 — No recent signal or evidence of closure
 
-### Town Fit (2 pts)
+### Town (3 pts)
 
-**Leisure vs. Workforce Character (1 pt)**
-- 1 — Dominated by through-travelers, recreationists, road-trippers, repeat leisure visitors
-- 0.5 — Mixed leisure and workforce
-- 0 — Workforce/industrial dominant, weekly-rate pattern common
+**Town Charm (0–2)** — measure KIND, not count (see rule 10)
+- 2 — Charming: walkable historic downtown, real arts/festival culture, or a genuine recreation destination
+- 1 — Some draw but ordinary
+- 0 — Workforce/industrial/transit town with no real center (one famous roadside oddity does NOT count)
 
-**Riding Context (1 pt)**
-- 1 — On or near known good riding; reviews mention riding or outdoor recreation unprompted
-- 0.5 — General outdoor/tourism area, no specific riding signal
-- 0 — No recreational context, pure transit or freight town
+**Riding Context (0–1)**
+- 1 — On/near known good riding; reviews mention riding or outdoor recreation unprompted
+- 0.5 — General outdoor/tourism, no specific riding signal
+- 0 — Pure transit or freight town
 
 ---
 
-## Town Scores
+## Town Scores (live model, 2026-07-01)
 
-| Dimension | Alliance NE | Lusk WY | Darby MT | Georgetown CO | Harrison AR |
-|---|---|---|---|---|---|
-| Independence & Character | 1.0 | 2.0 | 2.0 | 1.5 | 1.5 |
-| Price Tier Signal | 0.0 | 1.5 | 1.5 | 1.0 | 0.75 |
-| Review Quality | 0.5 | 1.5 | 1.5 | 1.0 | 0.5 |
-| Food Proximity & Quality | 0.5 | 1.5 | 2.0 | 2.0 | 1.0 |
-| Food Recency | 0.5 | 0.5 | 1.0 | 0.75 | 0.5 |
-| Leisure vs. Workforce | 0.0 | 0.75 | 1.0 | 1.0 | 0.75 |
-| Riding Context | 0.0 | 0.5 | 1.0 | 0.5 | 1.0 |
-| **TOTAL** | **2.5** | **8.25** | **10.0*** | **7.75** | **6.0** |
+| Dimension (max) | Alliance NE | Harrison AR | Lusk WY | Darby MT | Georgetown CO | Red Lodge MT |
+|---|---|---|---|---|---|---|
+| Independence & Character (2) | 1.0 | 1.0 | 2.0 | 2.0 | 2.0 | 2.0 |
+| Price Tier (1) | 0.0 | 0.5 | 1.0 | 1.0 | 1.0 | 1.0 |
+| Review Quality (1) | 0.5 | 0.5 | 1.0 | 1.0 | 1.0 | 1.0 |
+| Food Proximity & Quality (2) | 1.0 | 1.5 | 1.0 | 2.0 | 2.0 | 2.0 |
+| Food Recency (1) | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| Town Charm (2) | 0.0 | 1.0 | 1.0 | 1.5 | 2.0 | 2.0 |
+| Riding Context (1) | 0.0 | 0.5 | 0.5 | 1.0 | 1.0 | 1.0 |
+| **TOTAL** | **3.5** | **6.0** | **7.5** | **9.5** | **10.0** | **10.0** |
+| **Band** | filter-out | acceptable | acceptable | route-worthy | route-worthy | route-worthy |
+| Best lodging scored | Rainbow Motel | Hotel Seville | Covered Wagon | Darmont Hotel | Clear Creek Inn | The Pollard Hotel |
 
-*Darby scores ceiling on this rubric but is realistically 8.5–9 in a larger corpus. Relative ordering is what matters: Darby > Lusk > Georgetown > Harrison >> Alliance.
+Note: the tool scores the town's best *found* independent lodging, which may
+differ from a specific property Brian had in mind (e.g. Alliance is scored on
+Rainbow Motel after the B&B cap drops Grandma Lala's; Georgetown on Clear Creek
+Inn). Relative ordering and bands are what matter.
 
 **Score interpretation:**
 - 8–10: Route-worthy — build a day around this town
-- 6–7.9: Acceptable — good stop if the corridor goes there
-- 4–5.9: Marginal — surface with a warning, let the human decide
+- 6–7.99: Acceptable — good stop if the corridor goes there
+- 4–5.99: Marginal — surface with a warning, let the human decide
 - <4: Filter out
