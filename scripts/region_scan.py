@@ -7,10 +7,11 @@ Reuses the verdict.py pipeline. Manual preview of Phase 3/4 corridor batch.
 """
 
 import math
+import os
 import sys
 import time
 
-sys.path.insert(0, "/Users/brianpeterson/Projects/personal/motel-db")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import places  # noqa: E402
 from chains import filter_independents  # noqa: E402
@@ -56,7 +57,8 @@ for name in CANDIDATES:
     print(f"  [{'IN ' if d <= RADIUS_MI else 'out'}] {name:<18} {d:5.1f} mi")
     time.sleep(1)
 
-print(f"\nScoring {len(anchors)} towns within {RADIUS_MI:.0f} mi (mode={MODE}, attribution on)...\n")
+print(f"\nScoring {len(anchors)} towns within {RADIUS_MI:.0f} mi "
+      f"(mode={MODE}, attribution on)...\n")
 
 
 def nearest_anchor(clat, clon):

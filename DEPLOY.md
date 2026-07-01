@@ -1,7 +1,7 @@
 # Deploying waypoint
 
-The app is deployed (product name **waypoint**; repo stays `peterb154/motel-db`) as a
-Docker Compose stack on a Proxmox LXC.
+The app (**waypoint**, repo `peterb154/waypoint`) is deployed as a Docker Compose stack on a
+Proxmox LXC.
 
 - **Live:** https://waypoint.epetersons.com (map + `/api/*` + `/sweep`)
 - **LXC:** CT 122 on Proxmox1, `192.168.0.34`, `/opt/waypoint`

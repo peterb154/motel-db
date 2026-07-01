@@ -16,7 +16,7 @@ import httpx
 
 PLACES_BASE = "https://places.googleapis.com/v1"
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
-USER_AGENT = "motel-db/phase1 (+https://github.com/peterb154/motel-db)"
+USER_AGENT = "waypoint (+https://github.com/peterb154/waypoint)"
 
 # Lodging-ish place types worth looking at (Places API New type table).
 LODGING_TYPES = [
