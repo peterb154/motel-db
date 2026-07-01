@@ -59,9 +59,21 @@ LODGING (4 pts), scored on the best SUITABLE independent lodging:
   real clustered complaints — do NOT auto-fail); 0 = thin, generic, or dominant complaints.
 
 FOOD (3 pts):
-- food_proximity_quality (0-2): 2 = non-chain restaurant within walking distance, specifically
-  NAMED in the lodging reviews; 1.5 = good food nearby, mentioned but not named; 1.0 = food
-  exists but not mentioned in lodging reviews; 0 = chain-only or dead food scene.
+- food_proximity_quality (0-2): judge a rider arriving in the EVENING for DINNER, and separate
+  a genuine food DESTINATION from "you'll eat fine".
+  2 = a real non-chain STANDOUT worth planning around. Operational bar: the town's best
+    non-chain dinner spot rates ~4.7+ with real volume, or is unmistakably raved about as a
+    destination. Review COUNT alone does NOT qualify — a small town funnels all its reviews to
+    the one main spot, so a popular bar & grill at 4.4-4.6 is NOT a destination no matter how
+    many reviews it has.
+  1.5 = solid, adequate real dinner options (a bar & grill / Mexican / diner / BBQ, typically
+    topping out around 4.4-4.6) — you'll eat fine, but nothing destination-worthy. This is the
+    DEFAULT for a normal small town with real restaurants.
+  1.0 = LIMITED — the non-chain scene is mostly coffee / bakery / ice-cream / deli or daytime-
+    only spots, or a single weak option.
+  0 = chain-only or a dead food scene.
+  A creamery, coffee roaster, or a mid-afternoon bakery does NOT by itself earn a high score;
+  weigh place types, review volume/enthusiasm, and any review mentions of hours.
 - food_recency (0-1): 1 = strong reviews within ~18 months; 0.5 = older/mixed; 0 = no recent
   signal or signs of closure. (Each review carries `when`, e.g. "4 months ago".)
 
